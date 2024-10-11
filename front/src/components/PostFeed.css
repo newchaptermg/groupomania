@@ -1,0 +1,89 @@
+.post-feed-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f2f5;
+  }
+  
+  .post-feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #2d3a4b;
+    color: white;
+    border-radius: 8px;
+  }
+  
+  .post-feed-logo {
+    max-height: 40px;
+  }
+  
+  .sign-out-button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .sign-out-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .posts-list {
+    margin-top: 20px;
+  }
+  
+  .post-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .post-card h3 {
+    margin-bottom: 10px;
+  }
+  
+  .post-card p {
+    color: #555;
+  }
+  
+  .view-details-button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .view-details-button:hover {
+    background-color: #218838;
+  }
+
+  .post-feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
+  
+  .sign-out-button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .sign-out-button:hover {
+    background-color: #0056b3;
+  }
+  
+  

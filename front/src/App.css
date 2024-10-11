@@ -1,0 +1,245 @@
+/* App.css */
+
+/* General reset and styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #2d3a4b;
+  color: white;
+  border-radius: 8px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.app-logo {
+  height: 50px; /* Set a fixed height for the logo */
+  margin-right: 10px;
+}
+
+.sign-out-button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sign-out-button:hover {
+  background-color: #0056b3;
+}
+
+/* 
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #282c34;
+  color: white;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+} */
+
+/* .app-logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+} */
+
+.homepage-logo, .app-logo {
+  max-width: 50px;
+  margin-bottom: 10px;
+}
+
+
+.app-main {
+  flex: 1;
+  padding: 20px;
+}
+
+.login-container, .signup-container, .post-feed-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form styles */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form input, form textarea {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+}
+
+form button {
+  padding: 10px;
+  background-color: #61dafb;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+form button:hover {
+  background-color: #21a1f1;
+}
+
+/* Post Feed styles */
+.post-feed-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.post-feed-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.post-feed-container li {
+  border-bottom: 1px solid #ddd;
+  padding: 15px 0;
+}
+
+.post-feed-container button {
+  margin: 10px 0;
+  padding: 8px 16px;
+  background-color: #21a1f1;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.post-feed-container button:hover {
+  background-color: #f568c8;
+}
+
+/* Error and success messages */
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: green;
+  margin-bottom: 10px;
+}
+
+
+
+/* Profile container styles */
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-details p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.delete-button {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.delete-button:hover {
+  background-color: darkred;
+}
+
+/* Navigation styles */
+.nav-link {
+  margin-left: 15px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.nav-button {
+  margin-left: 20px;
+  padding: 10px 15px;
+  background-color: #61dafb;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.nav-button:hover {
+  background-color: #21a1f1;
+}
+
+.profile-container h3 {
+  margin-top: 20px;
+}
+
+.profile-container form div {
+  margin-bottom: 10px;
+}
+
+.profile-container form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.profile-container form input {
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-container form button {
+  padding: 10px;
+  background-color: #61dafb;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.profile-container form button:hover {
+  background-color: #21a1f1;
+}

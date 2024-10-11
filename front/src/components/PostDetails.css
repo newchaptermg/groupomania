@@ -1,0 +1,25 @@
+.post-details-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-details-container h2 {
+    margin-bottom: 15px;
+    font-size: 24px;
+  }
+  
+  .post-details-container p {
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .post-image {
+    max-width: 100%;
+    margin-top: 15px;
+    border-radius: 8px;
+  }
+  
