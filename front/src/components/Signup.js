@@ -42,11 +42,13 @@ const Signup = () => {
       });
       setSuccess('Account created successfully! Redirecting to login...');
       setTimeout(() => {
-        navigate('/login');
+        navigate('/posts');
       }, 2000);
     } catch (err) {
       console.error('Error during signup:', err);
-      setError(err.response?.data?.error || 'Signup failed. Please try again.');
+      // Ensure the error is always a string or properly converted
+      const errorMessage = err.response?.data?.error || err.message || 'Signup failed. Please try again.';
+      setError(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
     }
   };
 
@@ -90,7 +92,7 @@ const Signup = () => {
             required
           />
         </div>
-        {error && <p className="error">{error}</p>}
+        {error && <p className="error">{String(error)}</p>}
         {success && <p className="success">{success}</p>}
         <button type="submit">Sign Up</button>
       </form>

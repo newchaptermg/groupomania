@@ -5,7 +5,7 @@ import API from './api';
 export const isTokenExpired = (token) => {
   try {
     const decoded = jwtDecode(token);
-    const now = Date.now() / 3600; // Current time in seconds
+    const now = Date.now() / 1000; // Current time in seconds
     return decoded.exp < now; // Compare token's expiration time with the current time
   } catch (err) {
     return true; // If token can't be decoded, treat it as expired
