@@ -16,6 +16,15 @@ const storage = multer.diskStorage({
   }
 });
 
+const fileFilter = (req, file, cb) => {
+  // Accept image, video, and audio files only
+  if (file.mimetype.startsWith('image/') || file.mimetype.startsWith('video/') || file.mimetype.startsWith('audio/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Unsupported file type. Only images, videos, and audio files are allowed.'));
+  }
+};
+
 const upload = multer({ storage: storage });
 
 // Create a new post with media upload
