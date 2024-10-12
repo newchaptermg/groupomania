@@ -91,3 +91,17 @@
   background-color: #fff;
   border-radius: 8px;
 }
+
+.delete-button {
+  background-color: red;
+  color: white;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.delete-button:hover {
+  background-color: darkred;
+}

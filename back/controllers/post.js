@@ -20,10 +20,11 @@ exports.createPost = async (req, res) => {
             return res.status(400).json({ error: 'User not found' });
         }
         
+        // Insert the new post along with the username
         const result = await pool.query(
-            `INSERT INTO public.posts (title, content, media_url, created_by) 
-             VALUES ($1, $2, $3, $4) RETURNING *`,
-            [title, content, mediaUrl, userId]
+            `INSERT INTO public.posts (title, content, media_url, created_by, username) 
+             VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+            [title, content, mediaUrl, userId, username]
         );
 
         res.status(201).json(result.rows[0]);
@@ -33,11 +34,12 @@ exports.createPost = async (req, res) => {
     }
 };
 
+
 // Function to fetch all posts
 exports.getAllPosts = async (req, res, next) => {
     try {
         const result = await pool.query(`
-           SELECT p.id, p.title, p.content, p.media_url, p.created_at, u.username AS author
+           SELECT p.id, p.title, p.content, p.media_url, p.created_at,p.created_by, u.username AS author
             FROM public.posts p
             JOIN public.users u ON p.created_by = u.id
         `);
@@ -84,22 +86,29 @@ exports.getPostById = async (req, res) => {
 // Function to delete a post
 exports.deletePost = async (req, res) => {
     const { id } = req.params;
-    const userId = req.user.id;
+    const userId = req.user.id; // User ID from the authentication middleware
 
     try {
-        const postResult = await pool.query(
-            `SELECT * FROM public.posts WHERE id = $1 AND created_by = $2`,
-            [id, userId]
-        );
+        // Check if the post exists and if the user is authorized to delete it
+        const postResult = await pool.query('SELECT * FROM public.posts WHERE id = $1', [id]);
 
         if (postResult.rows.length === 0) {
-            return res.status(403).json({ error: 'You are not authorized to delete this post.' });
+            return res.status(404).json({ error: 'Post not found.' });
         }
 
-        await pool.query(`DELETE FROM public.posts WHERE id = $1`, [id]);
+        const post = postResult.rows[0];
+
+        // Check if the post was created by the logged-in user
+        if (post.created_by !== userId) {
+            return res.status(403).json({ error: 'You do not have permission to delete this post.' });
+        }
+
+        // Delete the post
+        await pool.query('DELETE FROM public.posts WHERE id = $1', [id]);
         res.status(200).json({ message: 'Post deleted successfully.' });
     } catch (err) {
-        console.error('Error deleting post:', err);
+        console.error('Error deleting post:', err.message);
         res.status(500).json({ error: 'Server error' });
     }
 };
+

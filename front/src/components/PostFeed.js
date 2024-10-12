@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '../services/api';
 import './PostFeed.css';
+import { useNavigate } from 'react-router-dom';
 
 const PostFeed = () => {
   const [posts, setPosts] = useState([]);
@@ -9,10 +10,18 @@ const PostFeed = () => {
   const [media, setMedia] = useState(null);
   const [error, setError] = useState('');
   const [expandedPostId, setExpandedPostId] = useState(null);
+  const userId = localStorage.getItem('userId'); // Assuming you store user ID in local storage
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // If token is missing, redirect to the homepage
+      navigate('/');
+    } else {
+      fetchPosts();
+    }
+  }, [navigate]);
 
   const fetchPosts = async () => {
     try {
@@ -24,7 +33,7 @@ const PostFeed = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleCreatePost = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -60,16 +69,34 @@ const PostFeed = () => {
     return !isNaN(date) ? date.toLocaleDateString() : 'Invalid Date';
   };
 
+  const handleDelete = async (postId) => {
+    try {
+      await API.delete(`/posts/${postId}`);
+      fetchPosts(); // Refresh posts after deletion
+    } catch (err) {
+      console.error('Error deleting post:', err);
+      setError('Failed to delete the post. Please try again.');
+    }
+  };
+
+  const handleSignOut = () => {
+    // Remove the token and user ID from localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+
+    // Redirect to the login page or home page after sign-out
+    navigate('/'); // Update the route as needed
+  };
+
   return (
     <div className="post-feed-container">
       <header className="post-feed-header">
         <h2>Post Feed</h2>
-        <button onClick={() => localStorage.removeItem('token')} className="sign-out-button">Sign Out</button>
-      </header>
+        <button onClick={handleSignOut} className="sign-out-button">Sign Out</button>      </header>
       <div className="create-post-container">
         <h3>Create New Post</h3>
         {error && <p className="error-message">{error}</p>}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleCreatePost}>
           <input
             type="text"
             value={title}
@@ -85,7 +112,7 @@ const PostFeed = () => {
           />
           <input
             type="file"
-            accept="image/*,video/*,audio/*" // Allow images, videos, and audio files
+            accept="image/*,video/*,audio/*"
             onChange={(e) => setMedia(e.target.files[0])}
           />
           <button type="submit">Create Post</button>
@@ -99,17 +126,14 @@ const PostFeed = () => {
             {expandedPostId === post.id ? (
               <>
                 <p>{post.content}</p>
-                {post.media_url && (post.media_url.endsWith('.jpg') || post.media_url.endsWith('.png')) && (
-                  <img src={post.media_url} alt={post.title} className="post-image" />
-                )}
-                {post.media_url && (post.media_url.endsWith('.mp4') || post.media_url.endsWith('.avi')) && (
-                  <video controls src={post.media_url} className="post-video"></video>
-                )}
-                {post.media_url && (post.media_url.endsWith('.mp3') || post.media_url.endsWith('.wav')) && (
-                  <audio controls src={post.media_url} className="post-audio"></audio>
-                )}
+                {post.media_url && <img src={post.media_url} alt={post.title} className="post-image" />}
                 <p><strong>Posted by:</strong> {post.username || 'Unknown'}</p>
                 <p><strong>Created at:</strong> {formatDate(post.created_at)}</p>
+                {post.created_by === userId && (
+                  <button onClick={() => handleDelete(post.id)} className="delete-button">
+                    Delete
+                  </button>
+                )}
               </>
             ) : (
               <p>{post.content.substring(0, 100)}...</p>
