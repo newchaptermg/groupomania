@@ -4,8 +4,10 @@ const pool = require('../db');
 // Function to create a new post
 exports.createPost = async (req, res) => {
     const { title, content } = req.body;
-    const mediaUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    // const mediaUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    const mediaUrl = req.file ? `${process.env.BASE_URL}/uploads/${req.file.filename}` : null;
     const userId = req.user.id; // Assumes the user ID is set by the authentication middleware
+    
 
     try {
         if (!title || !content) {
@@ -19,7 +21,7 @@ exports.createPost = async (req, res) => {
         if (!username) {
             return res.status(400).json({ error: 'User not found' });
         }
-        
+
         // Insert the new post along with the username
         const result = await pool.query(
             `INSERT INTO public.posts (title, content, media_url, created_by, username) 
@@ -49,6 +51,7 @@ exports.getAllPosts = async (req, res, next) => {
         console.error('Error fetching posts:', err.message);
         res.status(500).json({ error: 'Error fetching posts' });
     }
+    console.log('Media URL:', mediaUrl);
 };
 
 // Function to fetch a single post by ID
