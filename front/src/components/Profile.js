@@ -59,7 +59,7 @@ const Profile = () => {
         setSuccess('Account deleted successfully. Redirecting to the homepage...');
         setTimeout(() => {
           localStorage.removeItem('token');
-          navigate('/login');
+          navigate('/');
         }, 2000);
       } catch (err) {
         console.error('Error deleting account:', err);
