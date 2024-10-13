@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import './Profile.css';
 
 const Profile = () => {
   const [username, setUsername] = useState('');
@@ -26,6 +27,10 @@ const Profile = () => {
 
     fetchProfile();
   }, []);
+
+  const handleBackToPosts = () => {
+    navigate('/posts');  // This will navigate to the post feed page
+  };
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -71,13 +76,22 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <h2>Profile</h2>
+
+      <div className="back-button-container">
+        <button onClick={handleBackToPosts} className="back-button">
+          Back to Posts
+        </button>
+      </div>
+
       {error && <p className="error">{error}</p>}
       {success && <p className="success">{success}</p>}
       <div className="profile-details">
         <p><strong>Username:</strong> {username}</p>
         <p><strong>Email:</strong> {email}</p>
       </div>
-      
+
+
+
       <form onSubmit={handleChangePassword}>
         <h3>Change Password</h3>
         <div>
