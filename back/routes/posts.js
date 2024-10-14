@@ -95,34 +95,37 @@ router.delete('/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Like a post
-router.post('/:id/like', authenticateToken, async (req, res) => {
-  const { id } = req.params;
-  try {
-    const result = await pool.query(
-      'UPDATE public.posts SET likes = likes + 1 WHERE id = $1 RETURNING *',
-      [id]
-    );
-    res.status(200).json(result.rows[0]);
-  } catch (err) {
-    console.error('Error liking post:', err.message);
-    res.status(500).json({ error: 'Error liking post' });
-  }
-});
+router.post('/:postId/mark-read', authenticateToken, postController.markAsRead);
 
-// Dislike a post
-router.post('/:id/dislike', authenticateToken, async (req, res) => {
-  const { id } = req.params;
-  try {
-    const result = await pool.query(
-      'UPDATE public.posts SET dislikes = dislikes + 1 WHERE id = $1 RETURNING *',
-      [id]
-    );
-    res.status(200).json(result.rows[0]);
-  } catch (err) {
-    console.error('Error disliking post:', err.message);
-    res.status(500).json({ error: 'Error disliking post' });
-  }
-});
+
+// // Like a post
+// router.post('/:id/like', authenticateToken, async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     const result = await pool.query(
+//       'UPDATE public.posts SET likes = likes + 1 WHERE id = $1 RETURNING *',
+//       [id]
+//     );
+//     res.status(200).json(result.rows[0]);
+//   } catch (err) {
+//     console.error('Error liking post:', err.message);
+//     res.status(500).json({ error: 'Error liking post' });
+//   }
+// });
+
+// // Dislike a post
+// router.post('/:id/dislike', authenticateToken, async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     const result = await pool.query(
+//       'UPDATE public.posts SET dislikes = dislikes + 1 WHERE id = $1 RETURNING *',
+//       [id]
+//     );
+//     res.status(200).json(result.rows[0]);
+//   } catch (err) {
+//     console.error('Error disliking post:', err.message);
+//     res.status(500).json({ error: 'Error disliking post' });
+//   }
+// });
 
 module.exports = router;

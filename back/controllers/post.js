@@ -39,20 +39,41 @@ exports.createPost = async (req, res) => {
 
 // Function to fetch all posts
 exports.getAllPosts = async (req, res, next) => {
+    const userId = req.user.id; // Get the user ID from the authenticated user
+  
     try {
-        const result = await pool.query(`
-           SELECT p.id, p.title, p.content, p.media_url, p.created_at,p.created_by, u.username AS author
-            FROM public.posts p
-            JOIN public.users u ON p.created_by = u.id
-        `);
-
-        res.status(200).json(result.rows);
+      // Query to fetch posts and read status for the current user
+      const result = await pool.query(`
+        SELECT p.id, p.title, p.content, p.media_url, p.created_at, p.created_by, u.username AS author,
+               COALESCE(pr.read_at IS NOT NULL, false) AS is_read
+        FROM public.posts p
+        JOIN public.users u ON p.created_by = u.id
+        LEFT JOIN post_reads pr ON p.id = pr.post_id AND pr.user_id = $1
+        ORDER BY p.created_at DESC
+      `, [userId]);
+  
+      res.status(200).json(result.rows);
     } catch (err) {
-        console.error('Error fetching posts:', err.message);
-        res.status(500).json({ error: 'Error fetching posts' });
+      console.error('Error fetching posts:', err.message);
+      res.status(500).json({ error: 'Error fetching posts' });
     }
-    console.log('Media URL:', mediaUrl);
-};
+  };
+  
+// exports.getAllPosts = async (req, res, next) => {
+//     try {
+//         const result = await pool.query(`
+//            SELECT p.id, p.title, p.content, p.media_url, p.created_at,p.created_by, u.username AS author
+//             FROM public.posts p
+//             JOIN public.users u ON p.created_by = u.id
+//         `);
+
+//         res.status(200).json(result.rows);
+//     } catch (err) {
+//         console.error('Error fetching posts:', err.message);
+//         res.status(500).json({ error: 'Error fetching posts' });
+//     }
+//     console.log('Media URL:', mediaUrl);
+// };
 
 // Function to fetch a single post by ID
 // post.js (Controller)
@@ -103,7 +124,7 @@ exports.deletePost = async (req, res) => {
 
         // Check if the post was created by the logged-in user
         if (post.created_by !== userId) {
-            return res.status(403).json({ error: 'You do not have permission to delete this post.' });
+            return res.status(403).json({ error: 'You are not authorized to delete this post.'  });
         }
 
         // Delete the post
@@ -111,7 +132,60 @@ exports.deletePost = async (req, res) => {
         res.status(200).json({ message: 'Post deleted successfully.' });
     } catch (err) {
         console.error('Error deleting post:', err.message);
-        res.status(500).json({ error: 'Server error' });
+        res.status(500).json({ error: 'Internal server error. Please try again later.' });
     }
 };
 
+exports.isPostRead = async (req, res) => {
+    const { userId } = req.user;
+    const { postId } = req.params;
+  
+    try {
+      const result = await pool.query(
+        'SELECT * FROM post_reads WHERE user_id = $1 AND post_id = $2',
+        [userId, postId]
+      );
+  
+      if (result.rows.length > 0) {
+        return res.status(200).json({ read: true });
+      } else {
+        return res.status(200).json({ read: false });
+      }
+    } catch (err) {
+      console.error('Error checking if post is read:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  
+  exports.markAsRead = async (req, res) => {
+    const { userId } = req.user;
+    const { postId } = req.params;
+  
+    try {
+      await pool.query(
+        'INSERT INTO post_reads (user_id, post_id, read_at) VALUES ($1, $2, NOW()) ON CONFLICT (user_id, post_id) DO NOTHING',
+        [userId, postId]
+      );
+      res.status(200).json({ message: 'Post marked as read' });
+    } catch (err) {
+      console.error('Error marking post as read:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  
+  exports.markAsUnread = async (req, res) => {
+    const { userId } = req.user;
+    const { postId } = req.params;
+  
+    try {
+      await pool.query(
+        'DELETE FROM post_reads WHERE user_id = $1 AND post_id = $2',
+        [userId, postId]
+      );
+      res.status(200).json({ message: 'Post marked as unread' });
+    } catch (err) {
+      console.error('Error marking post as unread:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  

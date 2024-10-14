@@ -129,3 +129,27 @@ button {
 .profile-link:hover {
   background-color: #218838;
 }
+
+.post-card.read {
+  background-color: #d659ec; /* Light grey for read posts */
+}
+
+.post-card.unread {
+  background-color: #ffffff; /* White for unread posts */
+  font-weight: bold;         /* Bold font for unread posts */
+}
+
+.post-card h3 {
+  display: flex;
+  align-items: center;
+}
+
+.post-card .fa-envelope {
+  color: red;
+}
+
+.post-card .fa-check-circle {
+  color: green;
+}
+
+
