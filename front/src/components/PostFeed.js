@@ -79,6 +79,17 @@ const PostFeed = () => {
     }
   };
 
+  const handleMarkAsUnread = async (postId) => {
+    try {
+      await API.post(`/posts/${postId}/mark-unread`);  // Send request to mark as unread
+      console.log(`Post ${postId} marked as unread`);
+      fetchPosts();  // Refresh the post list to reflect the change
+    } catch (err) {
+      console.error(`Error marking post ${postId} as unread:`, err);
+    }
+  };
+
+
   const handleSignOut = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
@@ -217,6 +228,13 @@ const PostFeed = () => {
                 {renderMedia(post.media_url)}
                 <p><strong>Posted by:</strong> {post.username || 'Unknown'}</p>
                 <p><strong>Created at:</strong> {formatDate(post.created_at)}</p>
+
+                {/* Toggle Read/Unread */}
+                {post.is_read ? (
+                  <button onClick={() => handleMarkAsUnread(post.id)} className="mark-unread-button">Mark as Unread</button>
+                ) : (
+                  <button onClick={() => handleExpandPost(post.id)} className="mark-read-button">Mark as Read</button>
+                )}
 
                 {String(post.created_by) === String(userId) && (
                   <button onClick={() => handleDelete(post.id)} >
