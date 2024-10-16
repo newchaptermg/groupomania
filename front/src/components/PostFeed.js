@@ -113,17 +113,17 @@ const PostFeed = () => {
     const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
     if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-      return <img src={`${baseUrl}${mediaUrl}`} alt="Post Media" width="200" />;
+      return <img src={`${baseUrl}${mediaUrl}`} alt="Post Media" className="responsive-media" />;
     } else if (['mp4', 'webm'].includes(fileExtension)) {
       return (
-        <video width="320" height="240" controls>
+        <video className="responsive-media" controls>
           <source src={`${baseUrl}${mediaUrl}`} type={`video/${fileExtension}`} />
           Your browser does not support the video tag.
         </video>
       );
     } else if (['mp3', 'wav'].includes(fileExtension)) {
       return (
-        <audio controls>
+        <audio className="responsive-media" controls>
           <source src={`${baseUrl}${mediaUrl}`} type={`audio/${fileExtension}`} />
           Your browser does not support the audio element.
         </audio>
@@ -132,6 +132,27 @@ const PostFeed = () => {
       return <p>Unsupported media type</p>;
     }
   };
+
+  //   if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+  //     return <img src={`${baseUrl}${mediaUrl}`} alt="Post Media" width="200" />;
+  //   } else if (['mp4', 'webm'].includes(fileExtension)) {
+  //     return (
+  //       <video width="320" height="240" controls>
+  //         <source src={`${baseUrl}${mediaUrl}`} type={`video/${fileExtension}`} />
+  //         Your browser does not support the video tag.
+  //       </video>
+  //     );
+  //   } else if (['mp3', 'wav'].includes(fileExtension)) {
+  //     return (
+  //       <audio controls>
+  //         <source src={`${baseUrl}${mediaUrl}`} type={`audio/${fileExtension}`} />
+  //         Your browser does not support the audio element.
+  //       </audio>
+  //     );
+  //   } else {
+  //     return <p>Unsupported media type</p>;
+  //   }
+  // };
 
   // const togglePost = (postId) => {
   //   setExpandedPostId((prev) => (prev === postId ? null : postId));

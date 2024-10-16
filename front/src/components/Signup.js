@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import API from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import './Signup.css';  
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -46,7 +47,6 @@ const Signup = () => {
       }, 2000);
     } catch (err) {
       console.error('Error during signup:', err);
-      // Ensure the error is always a string or properly converted
       const errorMessage = err.response?.data?.error || err.message || 'Signup failed. Please try again.';
       setError(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
     }
@@ -56,7 +56,7 @@ const Signup = () => {
     <div className="signup-container">
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
-        <div >
+        <div>
           <label>Username:</label>
           <input
             type="text"

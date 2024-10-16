@@ -157,21 +157,50 @@ exports.isPostRead = async (req, res) => {
     }
   };
   
-  exports.markAsRead = async (req, res) => {
-    const { userId } = req.user;
-    const { postId } = req.params;
+  // exports.markAsRead = async (req, res) => {
+  //   const { userId } = req.user.userId;
+  //   const { postId } = req.params;
   
-    try {
-      await pool.query(
-        'INSERT INTO post_reads (user_id, post_id, read_at) VALUES ($1, $2, NOW()) ON CONFLICT (user_id, post_id) DO NOTHING',
-        [userId, postId]
-      );
-      res.status(200).json({ message: 'Post marked as read' });
-    } catch (err) {
-      console.error('Error marking post as read:', err);
-      res.status(500).json({ error: 'Internal server error' });
+  //   try {
+  //     await pool.query(
+  //       'INSERT INTO post_reads (user_id, post_id, read_at) VALUES ($1, $2, NOW()) ON CONFLICT (user_id, post_id) DO NOTHING',
+  //       [userId, postId]
+  //     );
+  //     res.status(200).json({ message: 'Post marked as read' });
+  //   } catch (err) {
+  //     console.error('Error marking post as read:', err);
+  //     res.status(500).json({ error: 'Internal server error' });
+  //   }
+  // };
+
+  // Mark a post as read
+exports.markAsRead = async (req, res) => {
+  const { postId } = req.params;
+  const userId = req.user.userId; // Get the userId from the authentication middleware
+
+  try {
+    // Check if the post exists
+    const post = await pool.query('SELECT * FROM public.posts WHERE id = $1', [postId]);
+    if (post.rows.length === 0) {
+      return res.status(404).json({ error: 'Post not found' });
     }
-  };
+
+    // Insert into post_reads if it doesn't already exist
+    await pool.query(
+      `INSERT INTO public.post_reads (user_id, post_id, read_at)
+       VALUES ($1, $2, NOW())
+       ON CONFLICT (user_id, post_id) 
+       DO UPDATE SET read_at = EXCLUDED.read_at`,
+      [userId, postId]
+    );
+
+    res.status(200).json({ message: 'Post marked as read' });
+  } catch (err) {
+    console.error('Error marking post as read:', err.message);
+    res.status(500).json({ error: 'Error marking post as read' });
+  }
+};
+
   
   exports.markAsUnread = async (req, res) => {
     const { userId } = req.user;

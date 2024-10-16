@@ -152,4 +152,53 @@ button {
   color: green;
 }
 
+/* Responsive media (images, videos, etc.) */
+.responsive-media {
+  width: 100%;
+  height: auto;
+  max-width: 100%;  /* Ensures that media does not exceed the container width */
+  border-radius: 8px;
+  margin-top: 10px;
+  display: block;
+}
+
+/* Media queries for smaller screens */
+@media only screen and (max-width: 600px) {
+  .post-feed-container {
+    padding: 10px;
+  }
+
+  .post-feed-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .post-card {
+    padding: 10px;
+  }
+
+  .view-details-button {
+    padding: 6px 10px;
+  }
+
+  .sign-out-button {
+    padding: 6px 10px;
+  }
+
+  /* Additional styles for very small screens */
+  @media only screen and (max-width: 350px) {
+    .post-feed-container {
+      padding: 5px;
+    }
+
+    .post-card {
+      padding: 8px;
+    }
+
+    .view-details-button {
+      padding: 5px 8px;
+    }
+  }
+}
+
 
