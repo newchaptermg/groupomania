@@ -148,7 +148,7 @@ form button:hover {
 .post-feed-container button {
   margin: 10px 0;
   padding: 8px 16px;
-  background-color: #21a1f1;
+  background-color: rgb(113, 119, 236);
   color: white;
   border: none;
   cursor: pointer;
@@ -156,7 +156,7 @@ form button:hover {
 }
 
 .post-feed-container button:hover {
-  background-color: #f568c8;
+  background-color: rgb(150, 63, 63);
 }
 
 /* Error and success messages */

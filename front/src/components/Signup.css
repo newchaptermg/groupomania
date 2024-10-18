@@ -54,7 +54,7 @@
   }
   
   .signup-container .success {
-    color: green;
+    color: rgb(17, 234, 17);
     margin-bottom: 15px;
     text-align: center;
   }
@@ -62,18 +62,18 @@
   /* Submit button */
   .signup-container button {
     padding: 12px;
-    background-color: #007bff;
+    background-color: #CF240D;
     border: none;
     color: white;
     font-size: 16px;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 100%; /* Make button take full width */
+    width: 94%; /* Make button take full width */
   }
   
   .signup-container button:hover {
-    background-color: #0056b3;
+    background-color: #f04a71;
   }
   
   /* Responsive design for smaller screens */
