@@ -4,7 +4,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: white;
 }
 
 .app-container {
@@ -15,22 +15,38 @@ body {
 
 .app-header {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   padding: 10px 20px;
-  background-color: #2d3a4b;
-  color: white;
+  /* background-color: #2d3a4b; */
+
+  /* color: white; */
   border-radius: 8px;
 }
 
 .logo-container {
   display: flex;
   align-items: center;
+
 }
 
+/* .app-logo {
+  height: auto; 
+  width: 1000px;
+  margin: 20px;  
+}  */
+
+.homepage-logo,
 .app-logo {
-  height: 50px; /* Set a fixed height for the logo */
-  margin-right: 10px;
+  height: 60px;
+  width: auto;
+  /* margin-bottom: 10px; */
+}
+
+.groupomania-title {
+  color: #fd2d01;
+  font-size: 35px;
+  margin-left: 5px;
 }
 
 .sign-out-button {
@@ -63,10 +79,11 @@ body {
   margin-right: 15px;
 } */
 
-.homepage-logo, .app-logo {
+/* .homepage-logo, .app-logo {
   max-width: 50px;
   margin-bottom: 10px;
-}
+} */
+
 
 
 .app-main {
@@ -74,7 +91,9 @@ body {
   padding: 20px;
 }
 
-.login-container, .signup-container, .post-feed-container {
+.login-container,
+.signup-container,
+.post-feed-container {
   max-width: 600px;
   margin: 0 auto;
   background: white;
@@ -89,7 +108,8 @@ form {
   flex-direction: column;
 }
 
-form input, form textarea {
+form input,
+form textarea {
   margin: 10px 0;
   padding: 10px;
   font-size: 16px;
@@ -244,3 +264,23 @@ form button:hover {
   background-color: #21a1f1;
 }
 
+/* Media query for screens smaller than 350px */
+@media only screen and (max-width: 350px) {
+
+  .app-header {
+    justify-content: center;    
+  }
+  .homepage-logo,
+  .app-logo {
+    height: 80px;
+    /* Reduce height for mobile */
+    width: auto;
+    /* Maintain aspect ratio */
+    margin-bottom: 5px;
+    /* Adjust margin */
+  }
+
+  .groupomania-title {
+    display: none;
+  }
+}
