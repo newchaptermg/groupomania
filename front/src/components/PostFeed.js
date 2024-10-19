@@ -12,10 +12,10 @@ const PostFeed = () => {
   const [title, setTitle] = useState('');          // State for the title
   const [content, setContent] = useState('');      // State for the content
   const [media, setMedia] = useState(null);        // State for the media file
-  const [error, setError] = useState('');  
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  
+
   const fetchPosts = useCallback(async () => {
     try {
       const response = await API.get('/posts', {
@@ -24,7 +24,7 @@ const PostFeed = () => {
         },
       });
       const sortedPosts = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      setPosts(sortedPosts); 
+      setPosts(sortedPosts);
       // setPosts(response.data);
     } catch (err) {
       console.error('Error fetching posts:', err);
@@ -37,7 +37,7 @@ const PostFeed = () => {
         setError('Failed to load posts. Please try again later.');
       }
     }
-  }, [navigate]); 
+  }, [navigate]);
 
   // Check for token on page load and redirect to homepage if not authenticated
   useEffect(() => {
@@ -48,7 +48,7 @@ const PostFeed = () => {
       fetchPosts();
     }
   }, [navigate, fetchPosts]);
-  
+
 
   const handleExpandPost = async (postId) => {
     setExpandedPostIds((prevExpanded) => {
@@ -61,20 +61,36 @@ const PostFeed = () => {
       }
     });
 
-    // Now handle marking the post as read
-    try {
-      await API.post(`/posts/${postId}/mark-read`);  // Send a request to mark as read
-      console.log(`Post ${postId} marked as read`);
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post.id === postId ? { ...post, is_read: true } : post
-        )
-      );
-      setError(''); // Clear the error message after successful creation
-    } catch (err) {
-      console.error(`Error marking post ${postId} as read:`, err);
+    // Only mark the post as read if it's not already marked as read
+    const post = posts.find(post => post.id === postId);
+    if (!post.is_read) {
+      try {
+        await API.post(`/posts/${postId}/mark-read`);
+        console.log(`Post ${postId} marked as read`);
+        setPosts(prevPosts =>
+          prevPosts.map(post =>
+            post.id === postId ? { ...post, is_read: true } : post
+          )
+        );
+      } catch (err) {
+        console.error(`Error marking post ${postId} as read:`, err);
+      }
     }
   };
+  //   // Now handle marking the post as read
+  //   try {
+  //     await API.post(`/posts/${postId}/mark-read`);  // Send a request to mark as read
+  //     console.log(`Post ${postId} marked as read`);
+  //     setPosts((prevPosts) =>
+  //       prevPosts.map((post) =>
+  //         post.id === postId ? { ...post, is_read: true } : post
+  //       )
+  //     );
+  //     setError(''); // Clear the error message after successful creation
+  //   } catch (err) {
+  //     console.error(`Error marking post ${postId} as read:`, err);
+  //   }
+  // };
 
   // Handle post creation
   const handleCreatePost = async (e) => {
@@ -222,7 +238,7 @@ const PostFeed = () => {
               <>
                 <p>{post.content}</p>
                 {renderMedia(post.media_url)}
-                <p><strong>Posted by:</strong> {post.username || 'Unknown'}</p>
+                <p><strong>Posted by:</strong> {post.author || 'Unknown'}</p>
                 <p><strong>Created at:</strong> {formatDate(post.created_at)}</p>
 
                 {/* Toggle Read/Unread */}
