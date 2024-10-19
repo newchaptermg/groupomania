@@ -28,6 +28,8 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage: storage });
 
+
+
 router.post('/create', authenticateToken, upload.single('media'), postController.createPost);
 router.get('/', authenticateToken, postController.getAllPosts);
 router.get('/:id', authenticateToken, postController.getPostById);

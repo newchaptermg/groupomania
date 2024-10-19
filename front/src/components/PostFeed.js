@@ -7,12 +7,12 @@ import { faCheckCircle, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 const PostFeed = () => {
   const [posts, setPosts] = useState([]);
+  const [expandedPostIds, setExpandedPostIds] = useState([]);
+  const userId = parseInt(localStorage.getItem('userId'), 10);
   const [title, setTitle] = useState('');          // State for the title
   const [content, setContent] = useState('');      // State for the content
   const [media, setMedia] = useState(null);        // State for the media file
-  const [error, setError] = useState('');
-  const [expandedPostId, setExpandedPostId] = useState(null);
-  const userId = parseInt(localStorage.getItem('userId'), 10);
+  const [error, setError] = useState('');  
   const navigate = useNavigate();
 
   
@@ -48,36 +48,31 @@ const PostFeed = () => {
       fetchPosts();
     }
   }, [navigate, fetchPosts]);
-
-  // Function to fetch posts
-  // const fetchPosts = async () => {
-  //   try {
-  //     const response = await API.get('/posts');
-  //     setPosts(response.data);
-  //   } catch (err) {
-  //     console.error('Error fetching posts:', err);
-  //     setError('Failed to load posts. Please try again later.');
-  //   }
-  // };
+  
 
   const handleExpandPost = async (postId) => {
-    if (expandedPostId === postId) {
-      setExpandedPostId(null);
-    } else {
-      setExpandedPostId(postId);
-
-      try {
-        await API.post(`/posts/${postId}/mark-read`);  // Send a request to mark as read
-        console.log(`Post ${postId} marked as read`);
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, is_read: true } : post
-          )
-        );
-        setError(''); // Clear the error message after successful creation
-      } catch (err) {
-        console.error(`Error marking post ${postId} as read:`, err);
+    setExpandedPostIds((prevExpanded) => {
+      if (prevExpanded.includes(postId)) {
+        // Collapse the post
+        return prevExpanded.filter(id => id !== postId);
+      } else {
+        // Expand the post
+        return [...prevExpanded, postId];
       }
+    });
+
+    // Now handle marking the post as read
+    try {
+      await API.post(`/posts/${postId}/mark-read`);  // Send a request to mark as read
+      console.log(`Post ${postId} marked as read`);
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId ? { ...post, is_read: true } : post
+        )
+      );
+      setError(''); // Clear the error message after successful creation
+    } catch (err) {
+      console.error(`Error marking post ${postId} as read:`, err);
     }
   };
 
@@ -172,31 +167,6 @@ const PostFeed = () => {
     }
   };
 
-  //   if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-  //     return <img src={`${baseUrl}${mediaUrl}`} alt="Post Media" width="200" />;
-  //   } else if (['mp4', 'webm'].includes(fileExtension)) {
-  //     return (
-  //       <video width="320" height="240" controls>
-  //         <source src={`${baseUrl}${mediaUrl}`} type={`video/${fileExtension}`} />
-  //         Your browser does not support the video tag.
-  //       </video>
-  //     );
-  //   } else if (['mp3', 'wav'].includes(fileExtension)) {
-  //     return (
-  //       <audio controls>
-  //         <source src={`${baseUrl}${mediaUrl}`} type={`audio/${fileExtension}`} />
-  //         Your browser does not support the audio element.
-  //       </audio>
-  //     );
-  //   } else {
-  //     return <p>Unsupported media type</p>;
-  //   }
-  // };
-
-  // const togglePost = (postId) => {
-  //   setExpandedPostId((prev) => (prev === postId ? null : postId));
-  // };
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return !isNaN(date) ? date.toLocaleDateString() : 'Invalid Date';
@@ -241,16 +211,14 @@ const PostFeed = () => {
         {posts.map((post) => (
           // <div key={post.id} className={`post-card ${post.is_read ? 'read' : 'unread'}`}>
           <div key={post.id} className="post-card">
-
             <h3 onClick={() => handleExpandPost(post.id)} style={{ cursor: 'pointer' }}>
-
               <FontAwesomeIcon
                 icon={post.is_read ? faCheckCircle : faEnvelope}
                 style={{ marginRight: '8px', color: post.is_read ? 'green' : 'red' }}
               />
               {post.title}
             </h3>
-            {expandedPostId === post.id ? (
+            {expandedPostIds.includes(post.id) ? (
               <>
                 <p>{post.content}</p>
                 {renderMedia(post.media_url)}
@@ -275,7 +243,7 @@ const PostFeed = () => {
               <p>{post.content.substring(0, 100)}...</p>
             )}
             <button onClick={() => handleExpandPost(post.id)} className="view-details-button">
-              {expandedPostId === post.id ? 'Collapse' : 'Expand'}
+              {expandedPostIds.includes(post.id) ? 'Collapse' : 'Expand'}
             </button>
           </div>
         ))}

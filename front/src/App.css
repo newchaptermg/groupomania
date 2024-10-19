@@ -188,7 +188,7 @@ form button:hover {
 }
 
 .delete-button {
-  background-color: red;
+  background-color: #CF240D;
   color: white;
   padding: 10px;
   border: none;
@@ -199,7 +199,7 @@ form button:hover {
 }
 
 .delete-button:hover {
-  background-color: darkred;
+  background-color: #f04a71;
 }
 
 /* Navigation styles */
@@ -251,7 +251,7 @@ form button:hover {
 
 .profile-container form button {
   padding: 10px;
-  background-color: #61dafb;
+  background-color: rgb(113, 119, 236);
   border: none;
   cursor: pointer;
   color: white;
@@ -261,7 +261,7 @@ form button:hover {
 }
 
 .profile-container form button:hover {
-  background-color: #21a1f1;
+  background-color: #177ce8;
 }
 
 /* Media query for screens smaller than 350px */

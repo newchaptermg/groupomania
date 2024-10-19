@@ -59,31 +59,30 @@ exports.getPostById = async (req, res) => {
   }
 };
 
-// Function to delete a post
+// Delete a post
 exports.deletePost = async (req, res) => {
   const { id } = req.params;
-  const userId = req.user.id;
+  const userId = req.user.userId;
 
   try {
-    const postResult = await pool.query('SELECT * FROM public.posts WHERE id = $1', [id]);
+    const post = await pool.query('SELECT * FROM public.posts WHERE id = $1', [id]);
 
-    if (postResult.rows.length === 0) {
-      return res.status(404).json({ error: 'Post not found.' });
+    if (post.rows.length === 0) {
+      return res.status(404).json({ error: 'Post not found' });
     }
 
-    const post = postResult.rows[0];
-
-    if (post.created_by !== userId) {
-      return res.status(403).json({ error: 'You are not authorized to delete this post.' });
+    if (post.rows[0].created_by !== userId) {
+      return res.status(403).json({ error: 'You do not have permission to delete this post' });
     }
 
     await pool.query('DELETE FROM public.posts WHERE id = $1', [id]);
-    res.status(200).json({ message: 'Post deleted successfully.' });
+    res.status(200).json({ message: 'Post deleted successfully' });
   } catch (err) {
     console.error('Error deleting post:', err.message);
-    res.status(500).json({ error: 'Internal server error.' });
+    res.status(500).json({ error: 'Error deleting post' });
   }
 };
+
 
 // Mark a post as read
 exports.markAsRead = async (req, res) => {
@@ -125,6 +124,7 @@ exports.markAsUnread = async (req, res) => {
   }
 };
 
+// ----------- oct 19 comment
 // const Post = require('../models/Post');
 // const pool = require('../db');
 
