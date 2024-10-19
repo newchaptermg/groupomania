@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import API from '../services/api';
 import './PostFeed.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelopeOpen, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 const PostFeed = () => {
   const [posts, setPosts] = useState([]);
@@ -12,6 +12,7 @@ const PostFeed = () => {
   const [title, setTitle] = useState('');          // State for the title
   const [content, setContent] = useState('');      // State for the content
   const [media, setMedia] = useState(null);        // State for the media file
+  const fileInputRef = useRef(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -110,6 +111,7 @@ const PostFeed = () => {
       setTitle('');
       setContent('');
       setMedia(null);
+      fileInputRef.current.value = '';
       fetchPosts(); // Refresh posts after successful creation
       setError(''); // Clear the error message after successful creation
     } catch (err) {
@@ -174,7 +176,8 @@ const PostFeed = () => {
     } else if (['mp3', 'wav'].includes(fileExtension)) {
       return (
         <audio className="responsive-media" controls>
-          <source src={`${baseUrl}${mediaUrl}`} type={`audio/${fileExtension}`} />
+          {/* <source src={`${baseUrl}${mediaUrl}`} type={`audio/${fileExtension}`} /> */}
+          <source src={`${baseUrl}${mediaUrl}`} type={`audio/mpeg`} />
           Your browser does not support the audio element.
         </audio>
       );
@@ -217,6 +220,7 @@ const PostFeed = () => {
           <input
             type="file"
             accept="image/*,video/*,audio/*"
+            ref={fileInputRef}
             onChange={(e) => setMedia(e.target.files[0])}
           />
           <button type="submit">Create Post</button>
@@ -225,11 +229,10 @@ const PostFeed = () => {
       {error && <p className="error-message">{error}</p>}
       <div className="posts-list">
         {posts.map((post) => (
-          // <div key={post.id} className={`post-card ${post.is_read ? 'read' : 'unread'}`}>
           <div key={post.id} className="post-card">
             <h3 onClick={() => handleExpandPost(post.id)} style={{ cursor: 'pointer' }}>
               <FontAwesomeIcon
-                icon={post.is_read ? faCheckCircle : faEnvelope}
+                icon={post.is_read ? faEnvelopeOpen : faEnvelope}
                 style={{ marginRight: '8px', color: post.is_read ? 'green' : 'red' }}
               />
               {post.title}
@@ -238,6 +241,7 @@ const PostFeed = () => {
               <>
                 <p>{post.content}</p>
                 {renderMedia(post.media_url)}
+
                 <p><strong>Posted by:</strong> {post.author || 'Unknown'}</p>
                 <p><strong>Created at:</strong> {formatDate(post.created_at)}</p>
 

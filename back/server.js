@@ -5,6 +5,8 @@ const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/posts');
 const errorHandler = require('./middleware/errorHandler'); // Import the error handler
 
+
+
 const app = express();
 
 // Enable CORS
