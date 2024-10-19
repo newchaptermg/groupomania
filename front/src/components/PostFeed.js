@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import API from '../services/api';
 import './PostFeed.css';
@@ -15,6 +15,30 @@ const PostFeed = () => {
   const userId = parseInt(localStorage.getItem('userId'), 10);
   const navigate = useNavigate();
 
+  
+  const fetchPosts = useCallback(async () => {
+    try {
+      const response = await API.get('/posts', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const sortedPosts = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      setPosts(sortedPosts); 
+      // setPosts(response.data);
+    } catch (err) {
+      console.error('Error fetching posts:', err);
+      if (err.response && err.response.status === 403) {
+        // Token is invalid or expired
+        localStorage.removeItem('token');
+        localStorage.setItem('message', 'Session expired. Please log in again.');
+        navigate('/');
+      } else {
+        setError('Failed to load posts. Please try again later.');
+      }
+    }
+  }, [navigate]); 
+
   // Check for token on page load and redirect to homepage if not authenticated
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -23,18 +47,18 @@ const PostFeed = () => {
     } else {
       fetchPosts();
     }
-  }, [navigate]);
+  }, [navigate, fetchPosts]);
 
   // Function to fetch posts
-  const fetchPosts = async () => {
-    try {
-      const response = await API.get('/posts');
-      setPosts(response.data);
-    } catch (err) {
-      console.error('Error fetching posts:', err);
-      setError('Failed to load posts. Please try again later.');
-    }
-  };
+  // const fetchPosts = async () => {
+  //   try {
+  //     const response = await API.get('/posts');
+  //     setPosts(response.data);
+  //   } catch (err) {
+  //     console.error('Error fetching posts:', err);
+  //     setError('Failed to load posts. Please try again later.');
+  //   }
+  // };
 
   const handleExpandPost = async (postId) => {
     if (expandedPostId === postId) {
@@ -45,7 +69,11 @@ const PostFeed = () => {
       try {
         await API.post(`/posts/${postId}/mark-read`);  // Send a request to mark as read
         console.log(`Post ${postId} marked as read`);
-        fetchPosts();
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, is_read: true } : post
+          )
+        );
         setError(''); // Clear the error message after successful creation
       } catch (err) {
         console.error(`Error marking post ${postId} as read:`, err);
