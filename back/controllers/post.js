@@ -6,8 +6,7 @@ exports.createPost = async (req, res) => {
     const { title, content } = req.body;
     // const mediaUrl = req.file ? `/uploads/${req.file.filename}` : null;
     const mediaUrl = req.file ? `${process.env.BASE_URL}/uploads/${req.file.filename}` : null;
-    const userId = req.user.id; // Assumes the user ID is set by the authentication middleware
-    
+    const userId = req.user.id; // Assumes the user ID is set by the authentication middleware   
 
     try {
         if (!title || !content) {

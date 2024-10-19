@@ -131,7 +131,7 @@ router.post('/:postId/mark-unread', authenticateToken, async (req, res) => {
 
 
 // Fetch a single post by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query('SELECT * FROM public.posts WHERE id = $1', [id]);
