@@ -121,7 +121,7 @@ form button {
   border: none;
   cursor: pointer;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
   border-radius: 4px;
 }
 
@@ -148,15 +148,17 @@ form button:hover {
 .post-feed-container button {
   margin: 5px;
   padding: 8px 16px;
-  background-color: rgb(113, 119, 236);
-  color: white;
+  background-color: lightcoral;
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
   border: none;
   cursor: pointer;
   border-radius: 4px;
 }
 
 .post-feed-container button:hover {
-  background-color: rgb(150, 63, 63);
+  background-color: rgb(230, 33, 7);
 }
 
 /* Error and success messages */
@@ -251,17 +253,18 @@ form button:hover {
 
 .profile-container form button {
   padding: 10px;
-  background-color: rgb(113, 119, 236);
+  background-color: lightcoral;
   border: none;
   cursor: pointer;
-  color: white;
+  color: black;
+  font-weight: bold;
   font-size: 16px;
   border-radius: 4px;
   margin-top: 10px;
 }
 
 .profile-container form button:hover {
-  background-color: #177ce8;
+  background-color: #f04a71;
 }
 
 /* Media query for screens smaller than 350px */

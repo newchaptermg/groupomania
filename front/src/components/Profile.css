@@ -10,8 +10,10 @@
   }
   
   .back-button {
-    background-color: #CF240D;
-    color: white;
+    background-color: lightcoral;
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;

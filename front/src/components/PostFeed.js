@@ -216,7 +216,7 @@ const PostFeed = () => {
             onChange={(e) => setContent(e.target.value)}
             placeholder="Content"
             required
-          />
+          />          
           <input
             type="file"
             accept="image/*,video/*,audio/*"

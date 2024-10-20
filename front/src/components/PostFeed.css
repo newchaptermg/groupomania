@@ -10,15 +10,17 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: rgb(113, 119, 236);
+  /* background-color: rgb(113, 119, 236); */
+  background-color: #e14732;
   color: white;
   border-radius: 8px;
 }
 
 .sign-out-button {
-  background-color: rgb(255, 0, 0) !important;
+  background-color: lightgrey !important;
   border: none;
-  color: yellow!important;
+  color: black!important;
+  font-weight: bold;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
@@ -120,8 +122,9 @@ button {
   color: black;
   text-decoration: none;
   font-weight: bold;
+  font-size: 18px;
   padding: 8px 16px;
-  background-color: rgb(144, 238, 144);
+  background-color: lightgrey;
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
