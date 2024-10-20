@@ -244,6 +244,8 @@ const PostFeed = () => {
               <FontAwesomeIcon
                 icon={post.is_read ? faEnvelopeOpen : faEnvelope}
                 style={{ marginRight: '8px', color: post.is_read ? 'green' : 'red' }}
+                aria-hidden="true" 
+                focusable="false"
               />
               {post.title}
             </h3>
