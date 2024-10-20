@@ -1,5 +1,9 @@
 const Post = require('../models/Post');
 const pool = require('../db');
+const express = require('express');
+const router = express.Router();
+const { getAllPosts } = require('../controllers/post');
+const authenticateToken = require('../middleware/auth');
 
 // Function to create a new post
 exports.createPost = async (req, res) => {
@@ -21,18 +25,20 @@ exports.createPost = async (req, res) => {
 
 // Function to fetch all posts
 exports.getAllPosts = async (req, res) => {
-  const userId = req.user.id;
-
+  const userId = req.user.userId;
+  console.log('Fetching posts for user ID:', userId);
   try {
     const result = await pool.query(`
       SELECT p.id, p.title, p.content, p.media_url, p.created_at, p.created_by, u.username AS author,
              COALESCE(pr.read_at IS NOT NULL, false) AS is_read
       FROM public.posts p
       JOIN public.users u ON p.created_by = u.id
-      LEFT JOIN post_reads pr ON p.id = pr.post_id AND pr.user_id = $1
+      LEFT JOIN public.post_reads pr ON p.id = pr.post_id AND pr.user_id = $1
       ORDER BY p.created_at DESC
     `, [userId]);
 
+    console.log('Query result:', result.rows);
+    
     res.status(200).json(result.rows);
   } catch (err) {
     console.error('Error fetching posts:', err.message);

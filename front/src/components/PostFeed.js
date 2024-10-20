@@ -24,9 +24,17 @@ const PostFeed = () => {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      const sortedPosts = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      const sortedPosts = response.data.map(post => ({
+        ...post,
+        is_read: !!post.is_read  // Ensure it's a boolean value
+      })).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      
       setPosts(sortedPosts);
-      // setPosts(response.data);
+      // const sortedPosts = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      // setPosts(sortedPosts);
+      // console.log('Fetched posts:',response.data);
+      
     } catch (err) {
       console.error('Error fetching posts:', err);
       if (err.response && err.response.status === 403) {
@@ -68,6 +76,7 @@ const PostFeed = () => {
       try {
         await API.post(`/posts/${postId}/mark-read`);
         console.log(`Post ${postId} marked as read`);
+        
         setPosts(prevPosts =>
           prevPosts.map(post =>
             post.id === postId ? { ...post, is_read: true } : post
@@ -231,6 +240,7 @@ const PostFeed = () => {
         {posts.map((post) => (
           <div key={post.id} className="post-card">
             <h3 onClick={() => handleExpandPost(post.id)} style={{ cursor: 'pointer' }}>
+            {/* {console.log('Post ID:', post.id, 'is_read:', post.is_read)}  */}
               <FontAwesomeIcon
                 icon={post.is_read ? faEnvelopeOpen : faEnvelope}
                 style={{ marginRight: '8px', color: post.is_read ? 'green' : 'red' }}
