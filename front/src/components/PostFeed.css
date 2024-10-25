@@ -44,6 +44,24 @@
   transition: transform 0.2s ease;
 }
 
+.create-post-button {  
+   background-color: #e14732 !important;
+  color: white!important ;              
+  padding: 8px 16px;  
+  margin: 5px;      
+  font-weight: bold; 
+  font-size: 19px !important;        
+  border: none;              
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.create-post-button:hover {
+  background-color: darkred !important; 
+  color: white !important ;
+}
+
+
 .post-card:hover {
   transform: scale(1.02);
 }

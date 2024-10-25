@@ -4,6 +4,7 @@ const Post = require('../models/Post');
 const authenticateToken = require('../middleware/auth'); // Import the middleware
 const router = express.Router();
 
+
 router.post('/create', authenticateToken, async (req, res) => {
   const { title, content } = req.body;
   const mediaUrl = req.file ? `/uploads/${req.file.filename}` : null;

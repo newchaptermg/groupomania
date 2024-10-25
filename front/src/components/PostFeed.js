@@ -87,20 +87,7 @@ const PostFeed = () => {
       }
     }
   };
-  //   // Now handle marking the post as read
-  //   try {
-  //     await API.post(`/posts/${postId}/mark-read`);  // Send a request to mark as read
-  //     console.log(`Post ${postId} marked as read`);
-  //     setPosts((prevPosts) =>
-  //       prevPosts.map((post) =>
-  //         post.id === postId ? { ...post, is_read: true } : post
-  //       )
-  //     );
-  //     setError(''); // Clear the error message after successful creation
-  //   } catch (err) {
-  //     console.error(`Error marking post ${postId} as read:`, err);
-  //   }
-  // };
+
 
   // Handle post creation
   const handleCreatePost = async (e) => {
@@ -232,15 +219,14 @@ const PostFeed = () => {
             ref={fileInputRef}
             onChange={(e) => setMedia(e.target.files[0])}
           />
-          <button type="submit">Create Post</button>
+          <button type="submit" className="create-post-button">Create Post</button>
         </form>
       </div>
       {error && <p className="error-message">{error}</p>}
       <div className="posts-list">
         {posts.map((post) => (
           <div key={post.id} className="post-card">
-            <h3 onClick={() => handleExpandPost(post.id)} style={{ cursor: 'pointer' }}>
-            {/* {console.log('Post ID:', post.id, 'is_read:', post.is_read)}  */}
+            <h3 onClick={() => handleExpandPost(post.id)} style={{ cursor: 'pointer' }}>            
               <FontAwesomeIcon
                 icon={post.is_read ? faEnvelopeOpen : faEnvelope}
                 style={{ marginRight: '8px', color: post.is_read ? 'green' : 'red' }}
