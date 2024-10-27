@@ -4,6 +4,8 @@ const express = require('express');
 const router = express.Router();
 const { getAllPosts } = require('../controllers/post');
 const authenticateToken = require('../middleware/auth');
+const fs = require('fs');
+const path = require('path');
 
 // Function to create a new post
 exports.createPost = async (req, res) => {
@@ -65,29 +67,79 @@ exports.getPostById = async (req, res) => {
   }
 };
 
-// Delete a post
 exports.deletePost = async (req, res) => {
   const { id } = req.params;
   const userId = req.user.userId;
 
   try {
-    const post = await pool.query('SELECT * FROM public.posts WHERE id = $1', [id]);
+    const postResult = await pool.query('SELECT * FROM public.posts WHERE id = $1', [id]);
 
-    if (post.rows.length === 0) {
+    if (postResult.rows.length === 0) {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    if (post.rows[0].created_by !== userId) {
+    const post = postResult.rows[0];
+
+    // Verify that the logged-in user is the creator of the post
+    if (post.created_by !== userId) {
       return res.status(403).json({ error: 'You do not have permission to delete this post' });
     }
 
+    // Delete the media file if it exists
+    if (post.media_url) {
+      const filePath = path.join(__dirname, '..', post.media_url); // Use media_url directly
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(`Error deleting media file at ${filePath}:`, err);
+        } else {
+          console.log('Media file deleted successfully');
+        }
+      });
+    }
+
+    // Delete the post from the database
     await pool.query('DELETE FROM public.posts WHERE id = $1', [id]);
-    res.status(200).json({ message: 'Post deleted successfully' });
+    res.status(200).json({ message: 'Post and associated media deleted successfully' });
   } catch (err) {
     console.error('Error deleting post:', err.message);
     res.status(500).json({ error: 'Error deleting post' });
   }
 };
+
+// // Delete a post before Oct 27 
+// exports.deletePost = async (req, res) => {
+//   const { id } = req.params;
+//   const userId = req.user.userId;
+
+//   try {
+//     const post = await pool.query('SELECT * FROM public.posts WHERE id = $1', [id]);
+
+//     if (post.rows.length === 0) {
+//       return res.status(404).json({ error: 'Post not found' });
+//     }
+
+//     if (post.rows[0].created_by !== userId) {
+//       return res.status(403).json({ error: 'You do not have permission to delete this post' });
+//     }
+
+//     if (post.media_url) {
+//       const filePath = path.join(__dirname, '..', post.media_url);  // Adjust the path to your project structure
+//       fs.unlink(filePath, (err) => {
+//         if (err) {
+//           console.error('Error deleting media file:', err);
+//         } else {
+//           console.log('Media file deleted successfully');
+//         }
+//       });
+//     }
+
+//     await pool.query('DELETE FROM public.posts WHERE id = $1', [id]);
+//     res.status(200).json({ message: 'Post deleted successfully' });
+//   } catch (err) {
+//     console.error('Error deleting post:', err.message);
+//     res.status(500).json({ error: 'Error deleting post' });
+//   }
+// };
 
 
 // Mark a post as read
