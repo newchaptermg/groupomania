@@ -37,14 +37,18 @@ const HomePage = () => {
         <h2>Welcome to Groupomania!</h2>
         {error && <p className="error">{error}</p>}
         <form onSubmit={handleLogin}>
+          <label htmlFor="email">Email</label>
           <input
+            id="email"
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          <label htmlFor="password">Password</label>
           <input
+            id="password"
             type="password"
             placeholder="Password"
             value={password}

@@ -29,12 +29,12 @@ const PostFeed = () => {
         ...post,
         is_read: !!post.is_read  // Ensure it's a boolean value
       })).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      
+
       setPosts(sortedPosts);
       // const sortedPosts = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       // setPosts(sortedPosts);
       // console.log('Fetched posts:',response.data);
-      
+
     } catch (err) {
       console.error('Error fetching posts:', err);
       if (err.response && err.response.status === 403) {
@@ -76,7 +76,7 @@ const PostFeed = () => {
       try {
         await API.post(`/posts/${postId}/mark-read`);
         console.log(`Post ${postId} marked as read`);
-        
+
         setPosts(prevPosts =>
           prevPosts.map(post =>
             post.id === postId ? { ...post, is_read: true } : post
@@ -200,20 +200,26 @@ const PostFeed = () => {
         <h3>Create New Post</h3>
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleCreatePost}>
+          <label htmlFor="title">Title</label>
           <input
+            id="title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
             required
           />
+          <label htmlFor="content">Content</label>
           <textarea
+            id="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Content"
             required
-          />          
+          />
+          <label htmlFor="media">Upload Media</label>
           <input
+            id="media"
             type="file"
             accept="image/*,video/*,audio/*"
             ref={fileInputRef}
@@ -226,13 +232,14 @@ const PostFeed = () => {
       <div className="posts-list">
         {posts.map((post) => (
           <div key={post.id} className="post-card">
-            <h3 onClick={() => handleExpandPost(post.id)} style={{ cursor: 'pointer' }}>            
+            <h3 onClick={() => handleExpandPost(post.id)} style={{ cursor: 'pointer' }}>
               <FontAwesomeIcon
                 icon={post.is_read ? faEnvelopeOpen : faEnvelope}
                 style={{ marginRight: '8px', color: post.is_read ? 'green' : 'red' }}
-                aria-hidden="true" 
+                aria-hidden="true"
                 focusable="false"
               />
+              <span className="sr-only">{post.is_read ? 'Read' : 'Unread'} Post</span>
               {post.title}
             </h3>
             {expandedPostIds.includes(post.id) ? (
@@ -261,7 +268,7 @@ const PostFeed = () => {
               <p>{post.content.substring(0, 100)}...</p>
             )}
             <button onClick={() => handleExpandPost(post.id)} className="view-details-button">
-              {expandedPostIds.includes(post.id) ? 'Collapse' : 'Expand'}
+              {expandedPostIds.includes(post.id) ? 'Minimize' : 'Read More'}
             </button>
           </div>
         ))}

@@ -95,8 +95,9 @@ const Profile = () => {
       <form onSubmit={handleChangePassword}>
         <h3>Change Password</h3>
         <div>
-          <label>Current Password:</label>
+          <label htmlFor="currentPassword">Current Password:</label>
           <input
+            id="currentPassword"
             type="password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
@@ -104,8 +105,9 @@ const Profile = () => {
           />
         </div>
         <div>
-          <label>New Password:</label>
+          <label htmlFor="newPassword">New Password:</label>
           <input
+            id="newPassword"
             type="password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
@@ -113,8 +115,9 @@ const Profile = () => {
           />
         </div>
         <div>
-          <label>Confirm New Password:</label>
+          <label htmlFor="confirmPassword">Confirm New Password:</label>
           <input
+            id="confirmPassword"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
