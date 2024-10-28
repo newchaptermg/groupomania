@@ -38,8 +38,9 @@ exports.login = async (req, res) => {
     }
 
     const user = await User.findByEmail(email);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+    // if (!user) {
+      if (!user || user.deleted_at !== null) { 
+        return res.status(404).json({ error: 'User not found or account is deactivated' });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
@@ -60,9 +61,12 @@ exports.getProfile = async (req, res) => {
   const { userId } = req.user;
 
   try {
-    const result = await pool.query('SELECT username, email FROM public.users WHERE id = $1', [userId]);
+    const result = await pool.query(
+      'SELECT username, email FROM public.users WHERE id = $1 AND deleted_at IS NULL',
+      [userId]
+    );
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'User not found or account is deactivated' });
     }
 
     res.status(200).json(result.rows[0]);
@@ -72,12 +76,30 @@ exports.getProfile = async (req, res) => {
   }
 };
 
+// // Get user profile controller
+// exports.getProfile = async (req, res) => {
+//   const { userId } = req.user;
+
+//   try {
+//     const result = await pool.query('SELECT username, email FROM public.users WHERE id = $1', [userId]);
+//     if (result.rows.length === 0) {
+//       return res.status(404).json({ error: 'User not found' });
+//     }
+
+//     res.status(200).json(result.rows[0]);
+//   } catch (err) {
+//     console.error('Error fetching user profile:', err);
+//     res.status(500).json({ error: 'Error fetching user profile' });
+//   }
+// };
+
 // Delete user controller
 exports.deleteUser = async (req, res) => {
   const { userId } = req.user;
 
   try {
-    await pool.query('DELETE FROM public.users WHERE id = $1', [userId]);
+    // await pool.query('DELETE FROM public.users WHERE id = $1', [userId]);
+    await pool.query('UPDATE public.users SET deleted_at = NOW() WHERE id = $1', [userId]);
     res.status(200).json({ message: 'Account deleted successfully' });
   } catch (err) {
     console.error('Error deleting account:', err);

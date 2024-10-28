@@ -34,7 +34,7 @@ exports.getAllPosts = async (req, res) => {
       SELECT p.id, p.title, p.content, p.media_url, p.created_at, p.created_by, u.username AS author,
              COALESCE(pr.read_at IS NOT NULL, false) AS is_read
       FROM public.posts p
-      JOIN public.users u ON p.created_by = u.id
+      LEFT JOIN public.users u ON p.created_by = u.id AND u.deleted_at IS NULL
       LEFT JOIN public.post_reads pr ON p.id = pr.post_id AND pr.user_id = $1
       ORDER BY p.created_at DESC
     `, [userId]);
@@ -53,10 +53,16 @@ exports.getPostById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query(
-      'SELECT p.*, u.username as author FROM public.posts p JOIN public.users u ON p.created_by = u.id WHERE p.id = $1',
-      [id]
-    );
+    const result = await pool.query(`
+      SELECT p.*, u.username as author 
+      FROM public.posts p 
+      LEFT JOIN public.users u ON p.created_by = u.id AND u.deleted_at IS NULL 
+      WHERE p.id = $1
+    `, [id]);
+    // const result = await pool.query(
+    //   'SELECT p.*, u.username as author FROM public.posts p JOIN public.users u ON p.created_by = u.id WHERE p.id = $1',
+    //   [id]
+    // );
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Post not found' });
     }

@@ -16,12 +16,14 @@ class User {
 
   // Find a user by email
   static async findByEmail(email) {
-    const result = await pool.query('SELECT * FROM public.users WHERE email = $1', [email]);
+    // const result = await pool.query('SELECT * FROM public.users WHERE email = $1', [email]);
+    const result = await pool.query('SELECT * FROM public.users WHERE email = $1 AND deleted_at IS NULL',[email]);
     return result.rows[0];
   }
 
   static async findById(id) {
-    const result = await pool.query('SELECT * FROM public.users WHERE id = $1', [id]);
+    // const result = await pool.query('SELECT * FROM public.users WHERE id = $1', [id]);
+    const result = await pool.query('SELECT * FROM public.users WHERE id = $1 AND deleted_at IS NULL',[id]);
     return result.rows[0];
   }
   
