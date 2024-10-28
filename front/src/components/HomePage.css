@@ -65,7 +65,7 @@
     background-color: #f04a71;
 }
 
-label {
+.login-card label {
     position: absolute;
     width: 1px;
     height: 1px;

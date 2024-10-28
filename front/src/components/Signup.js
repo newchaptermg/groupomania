@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import API from '../services/api';
 import { useNavigate } from 'react-router-dom';
-import './Signup.css';  
+import './Signup.css';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -57,8 +57,9 @@ const Signup = () => {
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Username:</label>
+          <label htmlFor="username">Username:</label>
           <input
+            id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -66,8 +67,9 @@ const Signup = () => {
           />
         </div>
         <div>
-          <label>Email:</label>
+          <label htmlFor="email">Email:</label>
           <input
+            id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -75,8 +77,9 @@ const Signup = () => {
           />
         </div>
         <div>
-          <label>Password:</label>
+          <label htmlFor="password">Password:</label>
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -84,8 +87,9 @@ const Signup = () => {
           />
         </div>
         <div>
-          <label>Confirm Password:</label>
+          <label htmlFor="confirmPassword">Confirm Password:</label>
           <input
+            id="confirmPassword"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}

@@ -22,13 +22,17 @@
   .signup-container form {
     display: flex;
     flex-direction: column;
+  }  
+
+
+  .signup-container label {
+    color: #333 !important;
+    display: block !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
   }
   
-  .signup-container label {
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
-  }
   
   .signup-container input {
     width: 90%; /* Ensure the input fields take full width */
@@ -54,7 +58,7 @@
   }
   
   .signup-container .success {
-    color: rgb(17, 234, 17);
+    color: rgb(11, 214, 11);
     margin-bottom: 15px;
     text-align: center;
   }
