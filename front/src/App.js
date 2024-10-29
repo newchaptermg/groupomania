@@ -32,8 +32,7 @@ const Header = () => (
   <header className="app-header">
     <div className="logo-container">
       <img src={logo} alt="Groupomania Logo" className="app-logo" />
-      <h1 className="groupomania-title">Groupomania</h1>
-      {/* <h1 className="groupomania-title">Groupomania</h1> */}
+      <h1 className="groupomania-title">Groupomania</h1>     
     </div>
   </header>
 );

@@ -16,11 +16,7 @@ body {
 .app-header {
   display: flex;
   justify-content: left;
-  align-items: center;
-  /* padding: 10px 20px; */
-  /* background-color: #2d3a4b; */
-
-  /* color: white; */
+  align-items: center; 
   border-radius: 8px;
 }
 
@@ -30,17 +26,10 @@ body {
 
 }
 
-/* .app-logo {
-  height: auto; 
-  width: 1000px;
-  margin: 20px;  
-}  */
-
 .homepage-logo,
 .app-logo {
   height: 60px;
-  width: auto;
-  /* margin-bottom: 10px; */
+  width: auto; 
 }
 
 .groupomania-title {
@@ -61,30 +50,6 @@ body {
 .sign-out-button:hover {
   background-color: #0056b3;
 }
-
-/* 
-.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #282c34;
-  color: white;
-  padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-} */
-
-/* .app-logo {
-  width: 50px;
-  height: 50px;
-  margin-right: 15px;
-} */
-
-/* .homepage-logo, .app-logo {
-  max-width: 50px;
-  margin-bottom: 10px;
-} */
-
-
 
 .app-main {
   flex: 1;

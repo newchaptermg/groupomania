@@ -30,10 +30,7 @@ const PostFeed = () => {
         is_read: !!post.is_read  // Ensure it's a boolean value
       })).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-      setPosts(sortedPosts);
-      // const sortedPosts = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      // setPosts(sortedPosts);
-      // console.log('Fetched posts:',response.data);
+      setPosts(sortedPosts);    
 
     } catch (err) {
       console.error('Error fetching posts:', err);
@@ -156,8 +153,7 @@ const PostFeed = () => {
   const renderMedia = (mediaUrl) => {
     if (!mediaUrl) return null;
 
-    const fileExtension = mediaUrl.split('.').pop().toLowerCase();
-    // Ensure you have the base URL pointing correctly to your backend's address
+    const fileExtension = mediaUrl.split('.').pop().toLowerCase();    
     const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
     if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
@@ -171,8 +167,7 @@ const PostFeed = () => {
       );
     } else if (['mp3', 'wav'].includes(fileExtension)) {
       return (
-        <audio className="responsive-media" controls>
-          {/* <source src={`${baseUrl}${mediaUrl}`} type={`audio/${fileExtension}`} /> */}
+        <audio className="responsive-media" controls>          
           <source src={`${baseUrl}${mediaUrl}`} type={`audio/mpeg`} />
           Your browser does not support the audio element.
         </audio>

@@ -1,72 +1,102 @@
+# Groupomania Project
 
-## Available Scripts
+Groupomania is a social networking platform that allows users to sign up, create posts, and interact with each other. The project includes features like user authentication, post creation, and soft deletion of user accounts.
 
-In the project directory, you can run:
+## Features
+- **User Authentication**: Users can sign up, log in, and manage their accounts.
+- **Soft Deletion**: Users who delete their account and others are still see the posts created by the deleted user.
+- **Post Management**: Users can create, read, update, and delete posts.
+- **Read/Unread Post Tracking**: Users can mark posts as read or unread.
 
-### `npm start`
+## Project Structure
+- **Controllers**: Handles business logic, such as creating posts and managing users.
+- **Routes**: Defines API endpoints for user actions, protected with authentication middleware.
+- **Middleware**: Manages file uploads and token-based user authentication.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- [Node.js](https://nodejs.org/) (v14 or later)
+- PostgreSQL database
 
-### `npm test`
+### a. Git Clone & database setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the Repository:
+   ```bash
+   git clone https://github.com/newchaptermg/groupomania.git
 
-### `npm run build`
+2. pgAdmin (PostgreSQL Database Setup)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    Open pgAdmin:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+a. Launch pgAdmin (if it’s not installed, download and install it from pgAdmin).
+Create a New Database:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+b. Right-click on Databases in the pgAdmin sidebar.
+Select Create > Database….
 
-### `npm run eject`
+c. Name the database (e.g., groupomania) and click Save.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Get Database Connection URL:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+a. Note down your PostgreSQL connection details. You’ll need them for the DATABASE_URL in your .env file.
+b. The format is: postgres://username:password@localhost:5432/groupomania.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. Run the SQL Commands
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Import the schema.sql File:
+a. Open the SQL Query Tool in pgAdmin by right-clicking on your database (e.g., groupomania) and selecting Query Tool.
+b. Copy the contents of schema.sql (or open the schema.sql file in pgAdmin).
+c. Run the SQL commands to set up the database schema - see schema.db
+d. Click Execute/Run to create the necessary tables.
 
-## Learn More
+5. Environment Variables (.env)
+Create a .env File:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Create a .env file in the root directory.
+Refer to .env-sample for required environment variables.
+Environment Variables Setup:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
 ### Backend database
-To start the server with nodemon, use the following command:
 
-npx nodemon server.js
+Backend URL - http://localhost:5000
+Backend Folder - groupomania/back
+Start the Server - To start the server with nodemon, use the following command:npx nodemon server.js
+
+### Front End 
+
+Frontend URL - http://localhost:3000
+Frontend Folder - roupomania/front
+Start the Server - To start the server with nodemon, use the following command:npm start
+
+### Database Schema: 
+
+See schema.sql for table definitions.
+
+### Media Uploads: 
+
+Media files (images, videos, audio) are stored in the uploads folder. Ensure the folder has correct read/write permissions.
+
+### API Endpoints
+
+- **Authentication**
+
+POST /auth/signup: Register a new user or reactivate a previously deleted account.
+POST /auth/login: Log in a user and receive a JWT token.
+
+- **User Management**
+
+GET /auth/profile: Get the user profile (requires authentication).
+DELETE /auth/delete: Soft-delete the user account (requires authentication).
+PATCH /auth/change-password: Change the user's password (requires authentication).
+
+- **Posts**
+
+POST /posts/create: Create a new post (requires authentication).
+GET /posts: Retrieve all posts (requires authentication).
+GET /posts/:id: Retrieve a specific post by ID (requires authentication).
+DELETE /posts/:id: Delete a specific post (requires authentication).
+PATCH /posts/:id/read: Mark a post as read.
+PATCH /posts/:id/unread: Mark a post as unread.
+
+

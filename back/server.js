@@ -5,8 +5,6 @@ const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/posts');
 const errorHandler = require('./middleware/errorHandler'); // Import the error handler
 
-
-
 const app = express();
 
 // Enable CORS
@@ -29,7 +27,6 @@ app.use(errorHandler); // Make sure to add this after all routes
 
 // upload
 app.use('/uploads', express.static('uploads'));
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

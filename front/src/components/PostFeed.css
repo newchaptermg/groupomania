@@ -164,12 +164,12 @@ button {
 }
 
 .post-card.read {
-  background-color: #d659ec; /* Light grey for read posts */
+  background-color: #d659ec; 
 }
 
 .post-card.unread {
-  background-color: #ffffff; /* White for unread posts */
-  font-weight: bold;         /* Bold font for unread posts */
+  background-color: #ffffff; 
+  font-weight: bold;         
 }
 
 .post-card h3 {
@@ -187,9 +187,8 @@ button {
 
 /* Responsive media (images, videos, etc.) */
 .responsive-media {
-  width: 100%;
-  /* height: auto; */
-  max-width: 100%;  /* Ensures that media does not exceed the container width */
+  width: 100%; 
+  max-width: 100%;  
   border-radius: 8px;
   margin-top: 10px;
   display: block;

@@ -58,11 +58,7 @@ exports.getPostById = async (req, res) => {
       FROM public.posts p 
       LEFT JOIN public.users u ON p.created_by = u.id AND u.deleted_at IS NULL 
       WHERE p.id = $1
-    `, [id]);
-    // const result = await pool.query(
-    //   'SELECT p.*, u.username as author FROM public.posts p JOIN public.users u ON p.created_by = u.id WHERE p.id = $1',
-    //   [id]
-    // );
+    `, [id]);    
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Post not found' });
     }

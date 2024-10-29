@@ -1,6 +1,5 @@
 const pool = require('../db');
 const bcrypt = require('bcryptjs');  
-
 class User {
   
   static async create(username, email, password) {

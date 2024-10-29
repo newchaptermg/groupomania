@@ -37,8 +37,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    const user = await User.findByEmail(email);
-    // if (!user) {
+    const user = await User.findByEmail(email);    
       if (!user || user.deleted_at !== null) { 
         return res.status(404).json({ error: 'User not found or account is deactivated' });
     }
@@ -75,23 +74,6 @@ exports.getProfile = async (req, res) => {
     res.status(500).json({ error: 'Error fetching user profile' });
   }
 };
-
-// // Get user profile controller
-// exports.getProfile = async (req, res) => {
-//   const { userId } = req.user;
-
-//   try {
-//     const result = await pool.query('SELECT username, email FROM public.users WHERE id = $1', [userId]);
-//     if (result.rows.length === 0) {
-//       return res.status(404).json({ error: 'User not found' });
-//     }
-
-//     res.status(200).json(result.rows[0]);
-//   } catch (err) {
-//     console.error('Error fetching user profile:', err);
-//     res.status(500).json({ error: 'Error fetching user profile' });
-//   }
-// };
 
 // Delete user controller
 exports.deleteUser = async (req, res) => {
